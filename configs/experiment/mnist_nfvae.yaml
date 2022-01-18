@@ -1,0 +1,15 @@
+# @package _global_
+
+seed: 12345
+
+defaults:
+  - override /model: nfvae.yaml
+  - override /datamodule: mnist.yaml
+
+logger:
+  wandb:
+    name: mnist_nfvae
+    job_type: train
+
+trainer:
+  resume_from_checkpoint: False

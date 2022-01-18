@@ -1,0 +1,48 @@
+_target_: src.models.NFVAE
+
+D: 40
+
+data_shape: [1, 28, 28]
+
+encoder_configs:
+  architecture: fcn
+  hidden_sizes: [128, 128]
+  dim_input: 784
+  activation: lrelu
+
+decoder_configs:
+  architecture: fcn
+  hidden_sizes: [128, 128, 784]
+  dim_input: ${model.D}
+  activation: tanh
+  last_activation: sigmoid
+
+dist_configs:
+  distribution: bernoulli
+
+flow_configs:
+  D: ${model.D}
+  flow_seq: [
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar'
+  ]
+  act_seq: [
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh',
+    'tanh'
+  ]
