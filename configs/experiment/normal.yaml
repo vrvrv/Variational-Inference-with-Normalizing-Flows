@@ -1,0 +1,17 @@
+# @package _global_
+
+seed: 12345
+
+defaults:
+  - override /model: nfvae_normal.yaml
+  - override /datamodule: normal.yaml
+
+logger:
+  wandb:
+    name: simulation-normal
+    job_type: train
+
+trainer:
+  gpus: 1
+  max_epochs: 1000
+  resume_from_checkpoint: False

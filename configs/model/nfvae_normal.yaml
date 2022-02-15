@@ -1,0 +1,69 @@
+_target_: src.models.NFVAE
+
+D: 1
+
+log_dir: nfvae
+data_shape: [1]
+
+encoder_configs:
+  architecture: fcn
+  hidden_sizes: [10, 1]
+  dim_input: 1
+  activation: softplus
+
+decoder_configs:
+  architecture: fcn
+  hidden_sizes: [10, 1]
+  dim_input: ${model.D}
+  activation: softplus
+  last_activation: id
+
+dist_configs:
+  distribution: normal
+
+flow_configs:
+  D: ${model.D}
+  flow_seq: [
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar',
+      'planar'
+  ]
+  act_seq: [
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh',
+      'tanh'
+  ]
+
+simulation: True
+optimizer: adam
+learning_rate: 0.01

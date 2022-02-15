@@ -1,0 +1,17 @@
+# @package _global_
+
+seed: 12345
+
+defaults:
+  - override /model: nfvae_glmm.yaml
+  - override /trainer: ddp.yaml
+  - override /datamodule: glmm.yaml
+
+logger:
+  wandb:
+    name: glmm
+    job_type: train
+
+trainer:
+  max_epochs: 2000
+  resume_from_checkpoint: False

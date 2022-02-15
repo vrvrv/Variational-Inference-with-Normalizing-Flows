@@ -1,0 +1,17 @@
+# @package _global_
+
+seed: 12345
+
+defaults:
+  - override /model: nfvae_simulation.yaml
+  - override /datamodule: mixture_1d.yaml
+
+logger:
+  wandb:
+    name: mixture-1d
+    job_type: train
+
+trainer:
+  gpus: 0
+  max_epochs: 1000
+  resume_from_checkpoint: False

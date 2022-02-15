@@ -2,6 +2,12 @@ from typing import List
 import torch
 import torch.nn as nn
 
+
+def init_weight(m):
+    if isinstance(m, nn.Linear):
+        nn.init.xavier_normal_(m.weight, gain=0.5)
+
+
 class FCNDecoder(nn.Module):
     def __init__(self, hidden_sizes: List[int], dim_input: int, activation, last_activation):
         super().__init__()
@@ -21,3 +27,6 @@ class FCNDecoder(nn.Module):
 
     def forward(self, z: torch.Tensor):
         return self.net(z)
+
+    def init_weight(self):
+        self.net.apply(init_weight)

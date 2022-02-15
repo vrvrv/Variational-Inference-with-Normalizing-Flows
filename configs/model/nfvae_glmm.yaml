@@ -1,0 +1,64 @@
+_target_: src.models.NFVAE_GLMM
+
+D: 128
+
+data_shape: [11]
+
+encoder_configs:
+  architecture: fcn
+  hidden_sizes: [256, 128]
+  dim_input: 11
+  activation: softplus
+
+decoder_configs:
+  architecture: fcn
+  hidden_sizes: [256, 5]
+  dim_input: ${model.D}
+  activation: softplus
+  last_activation: id
+
+dist_configs:
+  distribution: glmm
+  px: 5
+  pz: 5
+
+flow_configs:
+  D: ${model.D}
+  flow_seq: [
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar',
+    'planar'
+  ]
+  act_seq: [
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh',
+     'tanh'
+  ]
+
+simulation: True
+optimizer: adam
+learning_rate: 0.0001

@@ -12,7 +12,7 @@
 
 ## Installation
 ```bash
-https://github.com/vrvrv/Variational-Inference-with-Normalizing-Flows.git
+git clone https://github.com/vrvrv/Variational-Inference-with-Normalizing-Flows.git
 cd Variational-Inference-with-Normalizing-Flows
 
 # pip install -r requirements.txt

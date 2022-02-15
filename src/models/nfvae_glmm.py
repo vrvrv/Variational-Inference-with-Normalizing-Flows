@@ -13,7 +13,7 @@ from src.models.encoder import init_encoder
 from src.models.decoder import init_decoder
 
 
-class NFVAE(pl.LightningModule):
+class NFVAE_GLMM(pl.LightningModule):
     def __init__(
             self,
             data_shape: list,
@@ -43,14 +43,12 @@ class NFVAE(pl.LightningModule):
         self.encoder_logvar = nn.Linear(hdim, D)
 
         self.decoder = init_decoder(**decoder_configs)
-        self.recon_loss = recon_loss_fn(**dist_configs)
+        self.recon_loss = recon_loss_fn(**dist_configs)()
         self.flow = init_flow(**flow_configs)
-
 
     def forward(self, x):
         out = self.encoder(x)
         mu, log_var = self.encoder_mu(out), self.encoder_logvar(out)
-
         log_var = torch.clip(log_var, -10, 10)
         kl = -0.5 * (1. + log_var - mu ** 2. - torch.exp(log_var)).sum(-1)
 
@@ -73,7 +71,7 @@ class NFVAE(pl.LightningModule):
         xhat = self.decoder(zK)
         recon_loss = self.recon_loss(x, xhat)
 
-        return xhat, (kl, recon_loss, - logdet / len(self.flow))
+        return xhat, (kl, recon_loss, - logdet)
 
     def training_step(self, batch, batch_idx):
         X, y = batch
@@ -93,24 +91,24 @@ class NFVAE(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         X, y = batch
 
-        if self.hparams.simulation and self.current_epoch % 100 == 0:
-
-            log_dir = os.path.join(self.trainer.log_dir, self.hparams.log_dir)
+        if self.hparams.simulation and self.current_epoch % 10 == 0:
             "For 1d/2d simulation cases, we save the sampled result"
             z = torch.distributions.Normal(
                 loc=0., scale=1.
-            ).rsample((len(X), 1)).to(self.device)
+            ).rsample((1_000, self.hparams.D)).to(self.device)
 
             for i, f in enumerate(self.flow):
-                os.makedirs(os.path.join(log_dir, 'uhat'), exist_ok=True)
-                np.save(os.path.join(log_dir, f'uhat/Uhat-{self.current_epoch}-{i}'), z.cpu().numpy())
+                os.makedirs(os.path.join(self.trainer.log_dir, 'uhat'), exist_ok=True)
+                np.save(os.path.join(self.trainer.log_dir, f'uhat/Uhat-{self.current_epoch}-{i}'), z.cpu().numpy())
                 z, _ = f(z)
 
-
             u = self.decoder(z)
+            os.makedirs(os.path.join(self.trainer.log_dir, 'uhat'), exist_ok=True)
+            np.save(os.path.join(self.trainer.log_dir, f'uhat/Uhat-{self.current_epoch}'), u.cpu().numpy())
 
-            os.makedirs(os.path.join(log_dir, 'uhat'), exist_ok=True)
-            np.save(os.path.join(log_dir, f'uhat/Uhat-{self.current_epoch}'), u.cpu().numpy())
+            os.makedirs(os.path.join(self.trainer.log_dir, 'beta'), exist_ok=True)
+            beta = self.recon_loss.fe.weight.detach()
+            np.save(os.path.join(self.trainer.log_dir, f'beta/beta-{self.current_epoch}'), beta.cpu().numpy())
 
         elif not self.hparams.simulation:
             Xhat, loss = self.shared_step(X)

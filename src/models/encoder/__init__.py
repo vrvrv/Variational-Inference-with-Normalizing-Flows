@@ -3,13 +3,15 @@ from .fcn import FCNEncoder
 
 ACTIVATION = {
     'relu': nn.ReLU(),
-    'lrelu': nn.LeakyReLU()
+    'lrelu': nn.LeakyReLU(),
+    'elu': nn.ELU(),
+    'softplus': nn.Softplus()
 }
 
 
 def init_encoder(architecture: str, **kwargs):
     if architecture == 'fcn':
-        decoder = FCNEncoder(
+        encoder = FCNEncoder(
             hidden_sizes=kwargs.get("hidden_sizes"),
             dim_input=kwargs.get("dim_input"),
             activation=ACTIVATION[kwargs.get('activation')]
@@ -19,4 +21,6 @@ def init_encoder(architecture: str, **kwargs):
     else:
         raise NotImplementedError
 
-    return decoder, hdim
+    encoder.init_weight()
+
+    return encoder, hdim

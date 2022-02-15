@@ -1,6 +1,6 @@
 _target_: src.models.NFVAE
 
-D: 40
+D: 10
 
 data_shape: [1, 28, 28]
 
@@ -46,3 +46,6 @@ flow_configs:
     'tanh',
     'tanh'
   ]
+simulation: False
+optimizer: adamw
+learning_rate: 0.0003

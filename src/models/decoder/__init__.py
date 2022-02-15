@@ -3,8 +3,11 @@ from .fcn import FCNDecoder
 
 ACTIVATION = {
     'relu': nn.ReLU(),
+    'elu': nn.ELU(),
     'tanh': nn.Tanh(),
-    'sigmoid': nn.Sigmoid()
+    'sigmoid': nn.Sigmoid(),
+    'id': nn.Identity(),
+    'softplus': nn.Softplus()
 }
 
 
@@ -18,5 +21,7 @@ def init_decoder(architecture: str, **kwargs):
         )
     else:
         raise NotImplementedError
+
+    decoder.init_weight()
 
     return decoder

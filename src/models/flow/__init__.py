@@ -28,6 +28,8 @@ def init_flow(D: int, flow_seq: List[str], act_seq: List[str]):
 
         if flow == 'planar':
             f = PlanarFlow(D=D, activation=act_fn)
+        elif flow == 'radial':
+            f = RadialFlow(D=D, activation=act_fn)
         else:
             raise NotImplementedError
 

@@ -19,14 +19,14 @@ class RadialFlow(nn.Module):
         nn.init.normal_(self.log_alpha)
         nn.init.normal_(self.beta)
 
-
     def forward(self, z: torch.Tensor):
         z_sub = z - self.z0
         alpha = torch.exp(self.log_alpha)
         r = torch.norm(z_sub)
         h = 1 / (alpha + r)
         f = z + self.beta * h * z_sub
-        log_det = (self.D - 1) * torch.log(1 + self.beta * h) + \
-            torch.log(1 + self.beta * h + self.beta - self.beta * r / (alpha + r) ** 2)
+
+        log_det = (self.D - 1) * torch.log(torch.abs(1 + self.beta * h)) + \
+                  torch.log(torch.abs(1 + self.beta * h + self.beta - self.beta * r / (alpha + r) ** 2))
 
         return f, log_det

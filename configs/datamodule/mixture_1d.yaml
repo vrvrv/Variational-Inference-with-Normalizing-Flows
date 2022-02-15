@@ -1,0 +1,6 @@
+_target_: src.datamodules.simulation.SimulationDataModule
+
+name: mixture
+
+data_dir: ${data_dir}/simulation/${datamodule.name} # data_dir is specified in config.yaml
+batch_size: 1000
