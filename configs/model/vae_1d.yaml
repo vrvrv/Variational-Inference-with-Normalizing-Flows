@@ -7,7 +7,7 @@ data_shape: [1]
 
 encoder_configs:
   architecture: fcn
-  hidden_sizes: [10, 1]
+  hidden_sizes: [10, ]
   dim_input: 1
   activation: softplus
 
@@ -33,25 +33,9 @@ flow_configs:
       'planar',
       'planar',
       'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
       'planar'
   ]
   act_seq: [
-      'tanh',
-      'tanh',
-      'tanh',
-      'tanh',
-      'tanh',
-      'tanh',
-      'tanh',
-      'tanh',
       'tanh',
       'tanh',
       'tanh',

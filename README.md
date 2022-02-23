@@ -28,5 +28,18 @@ If you want to control the number of hidden dimension, add `model.D=<hidden_dim>
 python train.py experiment=mnist_nfvae model.D=10
 ```
 
+## Experimental Result
+We compared Vanila-VAE and NFVAE on several different settings.
+
+### VAE
+
+![vae_mnist_d10](assets/vae_10.png)
+
+### MNIST dataset
+
+### 1D Simulation
+
+### Coupla Dataset
+
 ### References
 - [Variational Inference with Normalizing Flows, ICML](https://arxiv.org/abs/1505.05770)
