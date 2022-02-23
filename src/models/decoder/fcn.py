@@ -5,7 +5,7 @@ import torch.nn as nn
 
 def init_weight(m):
     if isinstance(m, nn.Linear):
-        nn.init.xavier_normal_(m.weight, gain=0.5)
+        nn.init.xavier_uniform_(m.weight, gain=0.5)
 
 
 class FCNDecoder(nn.Module):

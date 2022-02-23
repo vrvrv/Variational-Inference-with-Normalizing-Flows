@@ -3,7 +3,7 @@
 seed: 12345
 
 defaults:
-  - override /model: nfvae_exponential.yaml
+  - override /model: nfvae_1d.yaml
   - override /datamodule: exponential.yaml
 
 logger:
@@ -11,7 +11,10 @@ logger:
     name: exponential-nfvae
     job_type: train
 
+datamodule:
+  batch_size: 1000
+
 trainer:
-  gpus: 0
-  max_epochs: 1000
+  gpus: 1
+  max_epochs: 1001
   resume_from_checkpoint: False

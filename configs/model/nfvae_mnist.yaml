@@ -1,6 +1,10 @@
 _target_: src.models.NFVAE
 
+
+model: nfvae
+
 D: 10
+beta: 1.
 
 data_shape: [1, 28, 28]
 
@@ -25,23 +29,9 @@ flow_configs:
   flow_seq: [
       'planar',
       'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
       'planar'
   ]
   act_seq: [
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
     'tanh',
     'tanh',
     'tanh'

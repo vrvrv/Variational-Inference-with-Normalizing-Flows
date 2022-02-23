@@ -1,4 +1,5 @@
 import os
+import math
 import numpy as np
 
 import torch
@@ -46,6 +47,11 @@ class NFVAE_GLMM(pl.LightningModule):
         self.recon_loss = recon_loss_fn(**dist_configs)()
         self.flow = init_flow(**flow_configs)
 
+        print(self.encoder)
+        print(self.encoder_mu)
+        print(self.encoder_logvar)
+        print(self.decoder)
+
     def forward(self, x):
         out = self.encoder(x)
         mu, log_var = self.encoder_mu(out), self.encoder_logvar(out)
@@ -71,20 +77,26 @@ class NFVAE_GLMM(pl.LightningModule):
         xhat = self.decoder(zK)
         recon_loss = self.recon_loss(x, xhat)
 
-        return xhat, (kl, recon_loss, - logdet)
+        if len(self.flow) > 0:
+            neg_logdet = - logdet / len(self.flow)
+        else:
+            neg_logdet = 0
+
+        return xhat, (kl, recon_loss, neg_logdet)
+        # return xhat, (kl, recon_loss, -logdet)
 
     def training_step(self, batch, batch_idx):
         X, y = batch
-        _, (kl, recon_loss, neglogdet) = self.shared_step(X)
+        _, (kl, recon_loss, neg_logdet) = self.shared_step(X)
 
-        loss = torch.mean(kl + recon_loss + neglogdet)
+        loss = torch.mean(recon_loss + self.hparams.beta * (kl + neg_logdet))
         self.log("train_loss", loss, on_step=True, on_epoch=False, prog_bar=True, logger=True)
         self.log("train_kl", torch.mean(kl), on_step=True, on_epoch=False, prog_bar=True, logger=True)
         self.log("train_recon_loss", torch.mean(recon_loss), on_step=True, on_epoch=False, prog_bar=True, logger=True)
 
-        if isinstance(neglogdet, torch.Tensor):
+        if isinstance(neg_logdet, torch.Tensor):
             self.log(
-                "train_neglogdet", torch.mean(neglogdet), on_step=True, on_epoch=False, prog_bar=True, logger=True
+                "train_neglogdet", torch.mean(neg_logdet), on_step=True, on_epoch=False, prog_bar=True, logger=True
             )
         return loss
 
@@ -96,11 +108,6 @@ class NFVAE_GLMM(pl.LightningModule):
             z = torch.distributions.Normal(
                 loc=0., scale=1.
             ).rsample((1_000, self.hparams.D)).to(self.device)
-
-            for i, f in enumerate(self.flow):
-                os.makedirs(os.path.join(self.trainer.log_dir, 'uhat'), exist_ok=True)
-                np.save(os.path.join(self.trainer.log_dir, f'uhat/Uhat-{self.current_epoch}-{i}'), z.cpu().numpy())
-                z, _ = f(z)
 
             u = self.decoder(z)
             os.makedirs(os.path.join(self.trainer.log_dir, 'uhat'), exist_ok=True)

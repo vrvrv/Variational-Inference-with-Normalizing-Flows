@@ -3,7 +3,7 @@
 seed: 12345
 
 defaults:
-  - override /model: nfvae.yaml
+  - override /model: vae_mnist.yaml
   - override /datamodule: mnist.yaml
 
 logger:
@@ -12,6 +12,7 @@ logger:
     job_type: train
 
 trainer:
+  max_epochs: 200
   resume_from_checkpoint: False
 
 callbacks:

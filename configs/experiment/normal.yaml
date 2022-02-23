@@ -3,8 +3,11 @@
 seed: 12345
 
 defaults:
-  - override /model: nfvae_normal.yaml
+  - override /model: nfvae_1d.yaml
   - override /datamodule: normal.yaml
+
+model:
+  beta: 0.01
 
 logger:
   wandb:
@@ -13,5 +16,5 @@ logger:
 
 trainer:
   gpus: 1
-  max_epochs: 1000
+  max_epochs: 1001
   resume_from_checkpoint: False

@@ -31,15 +31,25 @@ python train.py experiment=mnist_nfvae model.D=10
 ## Experimental Result
 We compared Vanila-VAE and NFVAE on several different settings.
 
-### VAE
+### MNIST dataset
+We sampled from the model by taking decoder after generating gaussian noise.
+#### VAE
 
 ![vae_mnist_d10](assets/vae_10.png)
 
-### MNIST dataset
+#### NFVAE
+
+![nfvae_mnist_d10](assets/nfvae_10.png)
+
+| **Model** | Negative log-likelihood |
+| ---       | ---                     |
+| VAE       | ~ 110.98                |
+| NFVAE (D=10) | ~ 109.73             |
+
 
 ### 1D Simulation
 
 ### Coupla Dataset
 
 ### References
-- [Variational Inference with Normalizing Flows, ICML](https://arxiv.org/abs/1505.05770)
+- [Variational Inference with Normalizing Flows, ICML 2015](https://arxiv.org/abs/1505.05770)

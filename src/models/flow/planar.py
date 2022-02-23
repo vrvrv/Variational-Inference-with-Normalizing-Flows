@@ -15,9 +15,9 @@ class PlanarFlow(nn.Module):
         self.activation = activation
         self.activation_derivative = ACTIVATION_DERIVATIVES[activation]
 
-        nn.init.uniform_(self.w)
-        nn.init.uniform_(self.u)
-        nn.init.uniform_(self.b)
+        nn.init.xavier_uniform_(self.w, gain=0.5)
+        nn.init.xavier_uniform_(self.u, gain=0.5)
+        nn.init.normal_(self.b)
 
     def forward(self, z: torch.Tensor):
         lin = F.linear(z, self.w, self.b) # shape: (B, 1)

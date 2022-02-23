@@ -3,7 +3,7 @@
 seed: 12345
 
 defaults:
-  - override /model: nfvae_1d.yaml
+  - override /model: vae_1d.yaml
   - override /datamodule: mixture.yaml
 
 logger:

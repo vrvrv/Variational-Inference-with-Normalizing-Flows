@@ -43,7 +43,6 @@ class MNISTDataModule(LightningDataModule):
         self.pin_memory = pin_memory
 
         transform_seq = [
-            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.ConvertImageDtype(torch.float)
         ]

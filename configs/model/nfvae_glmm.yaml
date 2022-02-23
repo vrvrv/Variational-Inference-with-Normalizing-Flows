@@ -2,11 +2,13 @@ _target_: src.models.NFVAE_GLMM
 
 D: 128
 
+model: nfvae
+
 data_shape: [11]
 
 encoder_configs:
   architecture: fcn
-  hidden_sizes: [256, 128]
+  hidden_sizes: [256, ]
   dim_input: 11
   activation: softplus
 
@@ -29,29 +31,9 @@ flow_configs:
     'planar',
     'planar',
     'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
-    'planar',
     'planar'
   ]
   act_seq: [
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
-     'tanh',
      'tanh',
      'tanh',
      'tanh',

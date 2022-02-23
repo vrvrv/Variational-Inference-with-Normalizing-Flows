@@ -1,6 +1,6 @@
 # output paths for hydra logs
 run:
-  dir: logs/runs/${datamodule.name}
+  dir: logs/runs/${model.model}/${datamodule.name}/${now:%Y-%m-%d_%H-%M}
 sweep:
   dir: logs/multiruns/${now:%Y-%m-%d_%H-%M-%S}
   subdir: ${hydra.job.num}

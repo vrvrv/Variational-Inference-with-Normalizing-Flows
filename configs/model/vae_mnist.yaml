@@ -1,6 +1,9 @@
 _target_: src.models.NFVAE
 
+
+model: nfvae
 D: 10
+beta: 1.
 
 data_shape: [1, 28, 28]
 
@@ -22,30 +25,9 @@ dist_configs:
 
 flow_configs:
   D: ${model.D}
-  flow_seq: [
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar',
-      'planar'
-  ]
-  act_seq: [
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh',
-    'tanh'
-  ]
+  flow_seq: []
+  act_seq: []
+
 simulation: False
 optimizer: adamw
 learning_rate: 0.0003

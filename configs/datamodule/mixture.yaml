@@ -1,4 +1,4 @@
-_target_: src.datamodules.simulation.SimulationDataModule
+_target_: src.datamodules.many_normal_means.SimulationDataModule
 
 name: mixture
 
